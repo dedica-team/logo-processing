@@ -46,10 +46,10 @@ class pathfinder {
         float upwards  = -1.0;
         float downwards = 0.5;
         PVector bump = new PVector(random(-1, 1), random(upwards, downwards));
-        bump.mult(0.2);
+        bump.mult(0.3);
         velocity.add(bump);
         
-        velocity.mult(random(19, 20));
+        velocity.mult(random(20, 25));
         location.add(velocity);
       } else {
         //too small
@@ -74,7 +74,7 @@ class pathfinder {
       if (random(0, 1) < branchCapacity) {
         children = (pathfinder[]) append(children, new pathfinder(new PVector(location.x, location.y), new PVector(velocity.x, velocity.y), diameter));
       }
-      branchCapacity *=0.4;
+      branchCapacity *=0.35;
     }
     
     isFinished = true;
@@ -135,7 +135,6 @@ void draw() {
 
   boolean allFinished  = true;
   for (int i = 0; i < paths.length; i++) {
-    paths[i].branch();
     if (!paths[i].isFinished)
       allFinished = false;
   }
