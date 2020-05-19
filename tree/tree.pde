@@ -141,6 +141,7 @@ void draw() {
   
   //everything must be drawn in the last frame in order to appear in the svg
   if (allFinished) {
+    background(40,40, 40);
     for (int i = 0; i < paths.length; i++) {
       paths[i].drawTwig();
       paths[i].drawLeave();
