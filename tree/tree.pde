@@ -8,25 +8,31 @@ class pathfinder {
   PVector velocity;
   float diameter;
   boolean isFinished = false;
+  boolean bloom = false;
   boolean hasDrawn = false;
   float branchCapacity = 1;
+  pathfinder[] children = new pathfinder[0];
   
-  pathfinder() {
-    lastLocation = new PVector(width/2 + width/random(-10,10), height); 
+  pathfinder(PVector seed) {
+    lastLocation = seed; 
     velocity = new PVector(0, -10);
     diameter = random(10, 20);
+    this.grow();
+    this.branch();
   }
 
   pathfinder(PVector origin, PVector velocity, float diameter) {
     this.lastLocation = origin;
     this.velocity = velocity;
     this.diameter = diameter * random(0.7, 0.9);
+    this.grow();
+    this.branch();
   }
 
-  void update() {
-    
-    if (isFinished || hasDrawn)
-      return;
+  /**
+   * computes the grow destination
+   */
+  private void grow() {
   
     location = new PVector(lastLocation.x, lastLocation.y);
     if(location.x > 0 && location.x < width - 10 && location.y > 0 && location.y <= height) {
@@ -46,31 +52,41 @@ class pathfinder {
         velocity.mult(random(19, 20));
         location.add(velocity);
       } else {
+        //too small
         isFinished = true;
+        bloom = true;
       }
     } else {
+      //out of bounds
       isFinished = true;
     }
   }
-  
-  void branch() {
     
+  /**
+   * creates child branches
+   */
+  void branch() {
+ 
     if (isFinished)
-      return;
+    return;
   
-    if (branchCapacity > 0.2) { // control length
+    while (branchCapacity > 0.2) { // control length
       if (random(0, 1) < branchCapacity) {
-        paths = (pathfinder[]) append(paths, new pathfinder(new PVector(location.x, location.y), new PVector(velocity.x, velocity.y), diameter));
+        children = (pathfinder[]) append(children, new pathfinder(new PVector(location.x, location.y), new PVector(velocity.x, velocity.y), diameter));
       }
-      branchCapacity *=0.3;
-    } else {
-      if (hasDrawn)
-        isFinished = true; //else retries branching forever
+      branchCapacity *=0.4;
     }
     
+    isFinished = true;
   }
   
+  /**
+   * recurisve drawing of children
+   */
   void drawTwig() {
+    for (int i = 0; i < children.length; i++) {
+      children[i].drawTwig();
+    }
     if (hasDrawn)
       return;
     strokeWeight(diameter);
@@ -79,7 +95,10 @@ class pathfinder {
   }
   
   void drawLeave() {
-    if (isFinished) {
+    for (int i = 0; i < children.length; i++) {
+      children[i].drawLeave();
+    }
+    if (isFinished && bloom) {
       noStroke();
       fill(255, 255, 255, 255);
       ellipse(location.x, location.y, 15, 15);
@@ -91,10 +110,9 @@ class pathfinder {
     }
   }
 }
-pathfinder[] paths;
-int num; //number of trees
-static int count;
 
+int num; //number of trees
+pathfinder[] paths;
 
 void setup() {
   beginRecord(SVG, "everything.svg");
@@ -105,26 +123,29 @@ void setup() {
   //orange
   stroke(255, 100, 0, 255);
   smooth();
-  num = 1;
-  count = 0;
+  num = 4;
   paths = new pathfinder[num];
-  for(int i = 0; i < num; i++) paths[i] = new pathfinder();
+  for(int i = 0; i < num; i++) {
+    float centerOffset = width *0.1 * random(-3,3); //max 50%
+    paths[i] = new pathfinder(new PVector(width/2 + centerOffset, height));
+  }
 }
 
 void draw() {
 
   boolean allFinished  = true;
   for (int i = 0; i < paths.length; i++) {
-    
-    paths[i].update();
-    paths[i].drawTwig();
     paths[i].branch();
-    paths[i].drawLeave();
     if (!paths[i].isFinished)
       allFinished = false;
   }
   
+  //everything must be drawn in the last frame in order to appear in the svg
   if (allFinished) {
+    for (int i = 0; i < paths.length; i++) {
+      paths[i].drawTwig();
+      paths[i].drawLeave();
+    }
     endRecord();
     exit();
   }
