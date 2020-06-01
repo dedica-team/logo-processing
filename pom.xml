@@ -1,0 +1,32 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>team.dedica</groupId>
+    <artifactId>logo</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>Logo Processing</name>
+    <dependencies>
+        <!-- Core requirements -->
+        <dependency>
+            <groupId>org.processing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.2.3</version>
+        </dependency>
+        <!-- PDF requirements -->
+        <dependency>
+            <groupId>org.processing</groupId>
+            <artifactId>pdf</artifactId>
+            <version>3.2.3</version>
+        </dependency>
+        <!-- Networking requirements -->
+        <dependency>
+            <groupId>org.processing</groupId>
+            <artifactId>net</artifactId>
+            <version>3.2.3</version>
+        </dependency>
+    </dependencies>
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+</project>
