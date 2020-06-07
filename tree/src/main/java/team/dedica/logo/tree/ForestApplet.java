@@ -18,6 +18,10 @@ public class ForestApplet extends PApplet {
      */
     boolean svgOutput = false;
 
+    public static void main(String[] args) {
+        PApplet.main(ForestApplet.class.getName(), args);
+    }
+
     @Override
     public void settings() {
         svgOutput = (args != null && Arrays.asList(args).contains("--svg"));
@@ -75,10 +79,6 @@ public class ForestApplet extends PApplet {
             endRecord();
             exit();
         }
-    }
-
-    public static void main(String[] args) {
-        PApplet.main(ForestApplet.class.getName());
     }
 
     /**
