@@ -97,7 +97,7 @@ public class ForestApplet extends PApplet {
 
         noStroke();
         fill(60, 60, 60, 255);
-        float horizon = (1-MAX_FOREST_HEIGHT_FACTOR) * height;
+        float horizon = (1-MAX_FOREST_HEIGHT_FACTOR) * height +10;
         rect(0, 0, width, horizon);
 
         paths.forEach(tree -> {

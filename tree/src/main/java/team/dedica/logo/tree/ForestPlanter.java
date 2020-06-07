@@ -24,7 +24,7 @@ public class ForestPlanter {
         List<TreeSegment> seeds = new ArrayList<>();
         final float limit = height * (1 - MAX_FOREST_HEIGHT_FACTOR);
         int step = 2;
-        for (int line = (int) limit; line < height; line += step) {
+        for (int line = (int) limit; line <= height; line += step) {
 
             float chance = ((height - line) / limit);
             float test = (random(0f, 1f));
@@ -33,7 +33,7 @@ public class ForestPlanter {
 
             //scale
             float scaleRatio = (line - limit) / (height - limit);
-            step = (int) (step * (1.4 + scaleRatio));
+            step = (int) (step * (1.41 + scaleRatio));
             if (scaleRatio < 0.005) {
                 continue;
             }
@@ -52,7 +52,8 @@ public class ForestPlanter {
                 }
                 float seedX = random(x - 10, x + 10);
 
-                float y = line + random(-step / 3, step / 3);
+                float halfStep = (float) (step / 2.5);
+                float y = line + random(-halfStep, halfStep);
                 if (y >= height) {
                     continue;
                 }
@@ -64,10 +65,9 @@ public class ForestPlanter {
     }
 
     private PVector getPath(float scaleRatio) {
-
         float goldenCut = 0.381f;
-        float pathWidth = random(200, 220) * scaleRatio;
-        float center = (float) ((width * goldenCut) );
+        float pathWidth = random(300, 320) * scaleRatio;
+        float center = (float) ((width * goldenCut));
         return new PVector(center - pathWidth, center + pathWidth);
     }
 }
