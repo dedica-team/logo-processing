@@ -23,9 +23,9 @@ public class ForestPlanter {
 
         List<TreeSegment> paths = new ArrayList<>();
         final float limit = height * (1 - MAX_FOREST_HEIGHT_FACTOR);
-        final int step = 10;
+        final int step = 8;
         float halfStep = step / 2;
-        for (int line = height; line > limit; line -= step) {
+        for (int line = (int)limit; line < height; line += step) {
 
             float chance = ((height - line) / limit);
             float test = (random(0f, 1f));
@@ -34,6 +34,8 @@ public class ForestPlanter {
 
             //scale
             float scaleRatio = (line - limit) / (height - limit);
+            if (scaleRatio < 0.01)
+                continue;
 
             //fewer trees in the front, more in the back
             int seeds = (int) Math.max(1, (test * chance * 10) * (1 / (scaleRatio)));

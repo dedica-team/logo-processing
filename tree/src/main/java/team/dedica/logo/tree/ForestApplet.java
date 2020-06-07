@@ -47,6 +47,7 @@ public class ForestApplet extends PApplet {
     @Override
     public void draw() {
 
+        /*
         boolean allFinished = true;
         for (int i = 0; i < paths.size(); i++) {
             if (!paths.get(i).isFinished) {
@@ -59,9 +60,12 @@ public class ForestApplet extends PApplet {
             return;
         }
 
+         */
+
         if (svgOutput) {
             background(40, 40, 40);
         }
+        //Collections.reverse(paths);
         paths.forEach(tree -> {
             drawTwig(tree);
             drawLeave(tree);
@@ -84,18 +88,22 @@ public class ForestApplet extends PApplet {
         for (int i = 0; i < treeSegment.children.size(); i++) {
             drawTwig(treeSegment.children.get(i));
         }
-        if (treeSegment.hasDrawn) {
+        if (treeSegment.hasDrawnTwig) {
             return;
         }
 
         strokeWeight(treeSegment.diameter);
         line(treeSegment.lastLocation.x, treeSegment.lastLocation.y, treeSegment.location.x, treeSegment.location.y);
-        treeSegment.hasDrawn = true;
+        treeSegment.hasDrawnTwig = true;
     }
 
     void drawLeave(TreeSegment treeSegment) {
         for (int i = 0; i < treeSegment.children.size(); i++) {
             drawLeave(treeSegment.children.get(i));
+        }
+
+        if (treeSegment.hasDrawnLeave) {
+            return;
         }
 
         if (treeSegment.isFinished && treeSegment.bloom) {
@@ -108,6 +116,7 @@ public class ForestApplet extends PApplet {
             //orange
             stroke(255, 100, 0, 200);
         }
+        treeSegment.hasDrawnLeave = true;
     }
 
 }

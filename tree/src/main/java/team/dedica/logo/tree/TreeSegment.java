@@ -24,7 +24,10 @@ public class TreeSegment {
     float diameter;
     boolean isFinished = false;
     boolean bloom = false;
-    boolean hasDrawn = false;
+
+    //paint only once
+    boolean hasDrawnTwig = false;
+    boolean hasDrawnLeave = false;
 
     /**
      * Probability of branching, decreased with every iteration
@@ -51,10 +54,6 @@ public class TreeSegment {
         lastLocation = seed;
         this.scaleRatio = scaleRatio;
 
-        if (scaleRatio > 0.8) {
-            scaleRatio *=2;
-        }
-
         velocity = new PVector(0, random(9, 12) * -1 * scaleRatio);
         diameter = ((random(10, 20)) * scaleRatio);
         this.grow();
@@ -64,7 +63,7 @@ public class TreeSegment {
     private TreeSegment(PVector origin, PVector velocity, float diameter, float scaleRatio) {
         this.lastLocation = origin;
         this.velocity = velocity;
-        this.diameter = diameter * random(0.7f, 0.9f);
+        this.diameter = diameter;
         this.scaleRatio = scaleRatio;
         this.grow();
         this.branch();
@@ -91,6 +90,9 @@ public class TreeSegment {
                 velocity.add(bump);
 
                 velocity.mult(random(20, 30) * scaleRatio);
+                if (scaleRatio > 0.8) {
+                    velocity.mult(1.5f);
+                }
                 location.add(velocity);
             } else {
                 //too small
@@ -113,8 +115,12 @@ public class TreeSegment {
 
         while (branchCapacity > MIN_BRANCH_CAPACITY) { // control length
             if (random(0, 1) < branchCapacity) {
+                float diameterScale = random(0.7f, 0.9f);
+                if (scaleRatio > 0.8) {
+                    diameterScale *= 1.05;
+                }
                 children.add(
-                        new TreeSegment(new PVector(location.x, location.y), new PVector(velocity.x, velocity.y), diameter, scaleRatio)
+                        new TreeSegment(new PVector(location.x, location.y), new PVector(velocity.x, velocity.y), diameter * diameterScale, scaleRatio)
                 );
             }
             branchCapacity *= BRANCH_CAPACITY_REDUCTION;
