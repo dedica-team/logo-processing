@@ -11,12 +11,13 @@ public class TreeSegment {
 
     public static final double MIN_DIAMETER_TO_GROW = 0.2;
     public static final double MIN_BRANCH_CAPACITY = 0.3;
-    public static final double BRANCH_CAPACITY_REDUCTION = 0.35;
+    public static final double BRANCH_CAPACITY_REDUCTION = 0.4;
 
     /**
      * branch growth velocition reduction per cycle
      */
     public static final float VELOCITY_REDUCTION = 0.8f;
+    public static final double ZOOM_THRESHOLD = 0.8;
 
     PVector lastLocation;
     PVector location;
@@ -54,8 +55,8 @@ public class TreeSegment {
         lastLocation = seed;
         this.scaleRatio = scaleRatio;
 
-        velocity = new PVector(0, random(9, 12) * -1 * scaleRatio);
-        diameter = ((random(10, 20)) * scaleRatio);
+        velocity = new PVector(0, random(9, 15) * -1 * scaleRatio);
+        diameter = ((random(10, 25)) * scaleRatio);
         this.grow();
         this.branch();
     }
@@ -89,9 +90,9 @@ public class TreeSegment {
                 bump.mult(0.4f);
                 velocity.add(bump);
 
-                velocity.mult(random(20, 30) * scaleRatio);
-                if (scaleRatio > 0.8) {
-                    velocity.mult(1.5f);
+                velocity.mult(random(20, 70) * scaleRatio);
+                if (scaleRatio > ZOOM_THRESHOLD) {
+                    velocity.mult(1.1f);
                 }
                 location.add(velocity);
             } else {
@@ -116,8 +117,8 @@ public class TreeSegment {
         while (branchCapacity > MIN_BRANCH_CAPACITY) { // control length
             if (random(0, 1) < branchCapacity) {
                 float diameterScale = random(0.7f, 0.9f);
-                if (scaleRatio > 0.8) {
-                    diameterScale *= 1.05;
+                if (scaleRatio > ZOOM_THRESHOLD) {
+                    diameterScale *= 1.07;
                 }
                 children.add(
                         new TreeSegment(new PVector(location.x, location.y), new PVector(velocity.x, velocity.y), diameter * diameterScale, scaleRatio)

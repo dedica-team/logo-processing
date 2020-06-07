@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static team.dedica.logo.tree.ForestPlanter.MAX_FOREST_HEIGHT_FACTOR;
+
 /**
  * Tree image generator
  */
@@ -92,6 +94,12 @@ public class ForestApplet extends PApplet {
         if (svgOutput || pngOutput) {
             background(40, 40, 40);
         }
+
+        noStroke();
+        fill(60, 60, 60, 255);
+        float horizon = (1-MAX_FOREST_HEIGHT_FACTOR) * height;
+        rect(0, 0, width, horizon);
+
         paths.forEach(tree -> {
             drawTwig(tree);
             drawLeave(tree);
@@ -134,13 +142,14 @@ public class ForestApplet extends PApplet {
 
         if (treeSegment.isFinished && treeSegment.bloom) {
             noStroke();
-            fill(255, 255, 255, 255);
+            float alpha = 155 + 100 * treeSegment.scaleRatio;
+            fill(255, 255, 255, alpha);
             ellipse(treeSegment.location.x, treeSegment.location.y, 15 * treeSegment.scaleRatio, 15 * treeSegment.scaleRatio);
             //orange
-            fill(255, 100, 0, 255);
+            fill(255, 100, 0, alpha);
             ellipse(treeSegment.location.x, treeSegment.location.y, 7 * treeSegment.scaleRatio, 7 * treeSegment.scaleRatio);
             //orange
-            stroke(255, 100, 0, 200);
+            stroke(255, 100, 0, alpha);
         }
         treeSegment.hasDrawnLeave = true;
     }
