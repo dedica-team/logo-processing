@@ -9,7 +9,7 @@ import static team.dedica.logo.tree.Util.random;
 
 public class ForestPlanter {
 
-    static final float MAX_FOREST_HEIGHT_FACTOR = 0.7f;
+    static final float MAX_FOREST_HEIGHT_FACTOR = 0.625f;
 
     final int height;
     final int width;
@@ -24,6 +24,7 @@ public class ForestPlanter {
         List<TreeSegment> paths = new ArrayList<>();
         final float limit = height * (1 - MAX_FOREST_HEIGHT_FACTOR);
         final int step = 10;
+        float halfStep = step / 2;
         for (int line = height; line > limit; line -= step) {
 
             float chance = ((height - line) / limit);
@@ -31,13 +32,17 @@ public class ForestPlanter {
             if (test > chance)
                 continue;
 
-            //draw the actual number of trees on this line
+            //scale
+            float scaleRatio = (line - limit) / (height - limit);
+
             //fewer trees in the front, more in the back
-            int seeds = (int) Math.max(1, (test * chance * 10));
+            int seeds = (int) Math.max(1, (test * chance * 10) * (1 / (scaleRatio)));
+
+            //draw the actual number of trees on this line
             for (int seed = 0; seed < seeds; seed++) {
                 float x = (random((float) 0, width));
-                float scale = (float)line/height;
-                paths.add(new TreeSegment(new PVector(x, line), scale));
+                float y = line + random(-halfStep, halfStep);
+                paths.add(new TreeSegment(new PVector(x, y), scaleRatio));
             }
         }
 

@@ -10,6 +10,13 @@ import static team.dedica.logo.tree.Util.random;
 public class TreeSegment {
 
     public static final double MIN_DIAMETER_TO_GROW = 0.2;
+    public static final double MIN_BRANCH_CAPACITY = 0.3;
+    public static final double BRANCH_CAPACITY_REDUCTION = 0.35;
+
+    /**
+     * branch growth velocition reduction per cycle
+     */
+    public static final float VELOCITY_REDUCTION = 0.8f;
 
     PVector lastLocation;
     PVector location;
@@ -25,9 +32,9 @@ public class TreeSegment {
     float branchCapacity = 1;
 
     /**
-     * tree scale
+     * tree scale ratio (0-1)
      */
-    float scale = 1f;
+    float scaleRatio;
 
     /**
      * child branches
@@ -35,23 +42,30 @@ public class TreeSegment {
     List<TreeSegment> children = new ArrayList<>();
 
     /**
-     * @param seed origin coordinates
-     * @param scale scale Factor, influences velocity
+     * Seeding.
+     *
+     * @param seed       origin coordinates
+     * @param scaleRatio scale Factor, influences velocity
      */
-    TreeSegment(PVector seed, float scale) {
+    TreeSegment(PVector seed, float scaleRatio) {
         lastLocation = seed;
-        this.scale = scale;
-        velocity = new PVector(0, -10 * scale);
-        diameter = ((random(10, 20)) * scale);
+        this.scaleRatio = scaleRatio;
+
+        if (scaleRatio > 0.8) {
+            scaleRatio *=2;
+        }
+
+        velocity = new PVector(0, random(9, 12) * -1 * scaleRatio);
+        diameter = ((random(10, 20)) * scaleRatio);
         this.grow();
         this.branch();
     }
 
-    private TreeSegment(PVector origin, PVector velocity, float diameter, float scale) {
+    private TreeSegment(PVector origin, PVector velocity, float diameter, float scaleRatio) {
         this.lastLocation = origin;
         this.velocity = velocity;
         this.diameter = diameter * random(0.7f, 0.9f);
-        this.scale = scale;
+        this.scaleRatio = scaleRatio;
         this.grow();
         this.branch();
     }
@@ -67,7 +81,7 @@ public class TreeSegment {
             if (diameter > MIN_DIAMETER_TO_GROW) {
 
                 velocity.normalize();
-                velocity.mult(0.8f); //slower growth
+                velocity.mult(VELOCITY_REDUCTION); //slower growth
 
                 //slight bump into other direction
                 float upwards = -1.0f;
@@ -76,7 +90,7 @@ public class TreeSegment {
                 bump.mult(0.4f);
                 velocity.add(bump);
 
-                velocity.mult(random(20, 25) * scale);
+                velocity.mult(random(20, 30) * scaleRatio);
                 location.add(velocity);
             } else {
                 //too small
@@ -97,13 +111,13 @@ public class TreeSegment {
         if (isFinished)
             return;
 
-        while (branchCapacity > 0.3) { // control length
+        while (branchCapacity > MIN_BRANCH_CAPACITY) { // control length
             if (random(0, 1) < branchCapacity) {
                 children.add(
-                        new TreeSegment(new PVector(location.x, location.y), new PVector(velocity.x, velocity.y), diameter, scale)
+                        new TreeSegment(new PVector(location.x, location.y), new PVector(velocity.x, velocity.y), diameter, scaleRatio)
                 );
             }
-            branchCapacity *= 0.35;
+            branchCapacity *= BRANCH_CAPACITY_REDUCTION;
         }
 
         isFinished = true;

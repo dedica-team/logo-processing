@@ -101,10 +101,10 @@ public class ForestApplet extends PApplet {
         if (treeSegment.isFinished && treeSegment.bloom) {
             noStroke();
             fill(255, 255, 255, 255);
-            ellipse(treeSegment.location.x, treeSegment.location.y, 15 * treeSegment.scale, 15 * treeSegment.scale);
+            ellipse(treeSegment.location.x, treeSegment.location.y, 15 * treeSegment.scaleRatio, 15 * treeSegment.scaleRatio);
             //orange
             fill(255, 100, 0, 255);
-            ellipse(treeSegment.location.x, treeSegment.location.y, 7 * treeSegment.scale, 7 * treeSegment.scale);
+            ellipse(treeSegment.location.x, treeSegment.location.y, 7 * treeSegment.scaleRatio, 7 * treeSegment.scaleRatio);
             //orange
             stroke(255, 100, 0, 200);
         }
