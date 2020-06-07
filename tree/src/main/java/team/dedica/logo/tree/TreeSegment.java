@@ -4,13 +4,13 @@ import processing.core.PVector;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+
+import static team.dedica.logo.tree.Util.random;
 
 public class TreeSegment {
 
     public static final double MIN_DIAMETER_TO_GROW = 0.2;
 
-    Random r = new Random();
     PVector lastLocation;
     PVector location;
     PVector velocity;
@@ -34,6 +34,10 @@ public class TreeSegment {
      */
     List<TreeSegment> children = new ArrayList<>();
 
+    /**
+     * @param seed origin coordinates
+     * @param scale scale Factor, influences velocity
+     */
     TreeSegment(PVector seed, float scale) {
         lastLocation = seed;
         this.scale = scale;
@@ -43,11 +47,7 @@ public class TreeSegment {
         this.branch();
     }
 
-    private float random(float min, float max) {
-        return min + r.nextFloat() * (max - min);
-    }
-
-    TreeSegment(PVector origin, PVector velocity, float diameter, float scale) {
+    private TreeSegment(PVector origin, PVector velocity, float diameter, float scale) {
         this.lastLocation = origin;
         this.velocity = velocity;
         this.diameter = diameter * random(0.7f, 0.9f);
