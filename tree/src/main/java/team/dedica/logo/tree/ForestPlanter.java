@@ -24,7 +24,7 @@ public class ForestPlanter {
         List<TreeSegment> seeds = new ArrayList<>();
         final float limit = height * (1 - MAX_FOREST_HEIGHT_FACTOR);
         int step = 2;
-        for (int line = (int) limit; line <= height; line += step) {
+        for (int line = (int) limit; line < height; line += step) {
 
             float chance = ((height - line) / limit);
             float test = (random(0f, 1f));
@@ -33,8 +33,8 @@ public class ForestPlanter {
 
             //scale
             float scaleRatio = (line - limit) / (height - limit);
-            step = (int) (step * (1.41 + scaleRatio));
-            if (scaleRatio < 0.005) {
+            step = (int) (step * (1.32 + scaleRatio));
+            if (scaleRatio < 0.01) {
                 continue;
             }
 
@@ -54,9 +54,7 @@ public class ForestPlanter {
 
                 float halfStep = (float) (step / 2.5);
                 float y = line + random(-halfStep, halfStep);
-                if (y >= height) {
-                    continue;
-                }
+
                 seeds.add(new TreeSegment(new PVector(seedX, y), scaleRatio));
             }
         }
