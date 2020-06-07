@@ -1,6 +1,8 @@
 package team.dedica.logo.tree;
 
 import processing.core.PApplet;
+import processing.core.PGraphics;
+import processing.svg.PGraphicsSVG;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +19,11 @@ public class ForestApplet extends PApplet {
      * everything must be drawn in the last frame in order to appear in the svg
      */
     boolean svgOutput = false;
+    boolean pngOutput = false;
 
+    /**
+     * @param args use "--svg" to create svg output
+     */
     public static void main(String[] args) {
         PApplet.main(ForestApplet.class.getName(), args);
     }
@@ -25,9 +31,30 @@ public class ForestApplet extends PApplet {
     @Override
     public void settings() {
         svgOutput = (args != null && Arrays.asList(args).contains("--svg"));
+        pngOutput = (args != null && Arrays.asList(args).contains("--png"));
 
+        String rendererName = null;
         if (svgOutput) {
-            size(2048, 1024);
+            println("recording SVG output");
+            rendererName = SVG;
+        }
+
+        if (pngOutput) {
+            println("recording png output");
+            g = new PGraphics();
+            rendererName = JAVA2D;
+        }
+
+        if (svgOutput || pngOutput) {
+            createGraphics(width, height, rendererName);
+            println("Rendered output enabled");
+            size(1920, 1080, rendererName);
+            if (pngOutput) {
+                beginRecord(g);
+            }
+            if (svgOutput) {
+                beginRecord("SVG", "forest.svg");
+            }
         } else {
             fullScreen(SPAN);
         }
@@ -35,9 +62,6 @@ public class ForestApplet extends PApplet {
 
     @Override
     public void setup() {
-        if (svgOutput) {
-            beginRecord(SVG, "tree.svg");
-        }
 
         background(40, 40, 40);
         ellipseMode(CENTER);
@@ -46,12 +70,12 @@ public class ForestApplet extends PApplet {
 
         ForestPlanter forestPlanter = new ForestPlanter(height, width);
         paths.addAll(forestPlanter.plant());
+        println("Planter planted " + paths.size() + " trees.");
     }
 
     @Override
     public void draw() {
 
-        /*
         boolean allFinished = true;
         for (int i = 0; i < paths.size(); i++) {
             if (!paths.get(i).isFinished) {
@@ -61,28 +85,30 @@ public class ForestApplet extends PApplet {
         }
 
         if (!allFinished) {
+            println("Waiting for trees to have finished growing.");
             return;
         }
 
-         */
-
-        if (svgOutput) {
+        if (svgOutput || pngOutput) {
             background(40, 40, 40);
         }
-        //Collections.reverse(paths);
         paths.forEach(tree -> {
             drawTwig(tree);
             drawLeave(tree);
         });
 
-        if (svgOutput) {
+        if (svgOutput || pngOutput) {
+            println("stopping output");
             endRecord();
+            if (pngOutput)
+                save("forest.png");
+            println("completed output");
             exit();
         }
     }
 
     /**
-     * recurisve drawing of children
+     * recursive drawing of children
      */
     void drawTwig(TreeSegment treeSegment) {
         for (int i = 0; i < treeSegment.children.size(); i++) {
