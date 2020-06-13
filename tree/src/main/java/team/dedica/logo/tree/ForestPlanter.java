@@ -7,19 +7,18 @@ import java.util.List;
 
 import static team.dedica.logo.tree.Util.random;
 
-public class ForestPlanter {
+/**
+ * Plants a forest with a path trough the trees.
+ *
+ *
+ *
+ */
+public class ForestPlanter implements Planter {
 
     static final float MAX_FOREST_HEIGHT_FACTOR = 0.385f;
 
-    final int height;
-    final int width;
-
-    public ForestPlanter(int height, int width) {
-        this.height = height;
-        this.width = width;
-    }
-
-    public List<TreeSegment> plant() {
+    @Override
+    public List<TreeSegment> plant(int height, int width) {
 
         List<TreeSegment> seeds = new ArrayList<>();
         final float limit = height * (1 - MAX_FOREST_HEIGHT_FACTOR);
@@ -40,7 +39,7 @@ public class ForestPlanter {
 
             float scRSq = (1 - scaleRatio) * (1 - scaleRatio/2); //very low for "near" lines
             //draw the actual number of trees on this line
-            PVector path = getPath(scaleRatio);
+            PVector path = getPath(scaleRatio, width);
             for (int x = 10; x < (width - 10); x += Math.max(1, 100 * scaleRatio)) {
                 test = (random(0f, 1f));
                 if (test > scRSq) {
@@ -62,10 +61,10 @@ public class ForestPlanter {
         return seeds;
     }
 
-    private PVector getPath(float scaleRatio) {
-        float goldenCut = 0.381f;
+    private PVector getPath(float scaleRatio, int width) {
+        float goldenCut = 1 - 1/GOLDEN_CUT;
         float pathWidth = random(300, 320) * scaleRatio;
-        float center = (float) ((width * goldenCut));
+        float center = (width * goldenCut);
         return new PVector(center - pathWidth, center + pathWidth);
     }
 }

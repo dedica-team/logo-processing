@@ -70,8 +70,8 @@ public class ForestApplet extends PApplet {
         stroke(255, 100, 0, 255);//orange
         smooth();
 
-        ForestPlanter forestPlanter = new ForestPlanter(height, width);
-        paths.addAll(forestPlanter.plant());
+        ForestPlanter forestPlanter = new ForestPlanter();
+        paths.addAll(forestPlanter.plant(height, width));
         println("Planter planted " + paths.size() + " trees.");
     }
 
