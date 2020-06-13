@@ -38,7 +38,7 @@ public class ForestPlanter {
                 continue;
             }
 
-            float scRSq = (1 - scaleRatio) * (1 - scaleRatio); //very low for "near" lines
+            float scRSq = (1 - scaleRatio) * (1 - scaleRatio/2); //very low for "near" lines
             //draw the actual number of trees on this line
             PVector path = getPath(scaleRatio);
             for (int x = 10; x < (width - 10); x += Math.max(1, 100 * scaleRatio)) {

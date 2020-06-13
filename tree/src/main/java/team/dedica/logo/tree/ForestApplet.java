@@ -142,15 +142,17 @@ public class ForestApplet extends PApplet {
 
         if (treeSegment.isFinished && treeSegment.bloom) {
             noStroke();
-            float alpha = 155 + 100 * treeSegment.scaleRatio;
-            fill(255, 255, 255, alpha);
+            float alpha = 0 + 255 * treeSegment.scaleRatio;
+            float alphaBloom = 155 + 100 * treeSegment.scaleRatio;
+            fill(255, 255, 255, alphaBloom);
             ellipse(treeSegment.location.x, treeSegment.location.y, 15 * treeSegment.scaleRatio, 15 * treeSegment.scaleRatio);
             //orange
-            fill(255, 100, 0, alpha);
+            fill(255, 100, 0, alphaBloom);
             ellipse(treeSegment.location.x, treeSegment.location.y, 7 * treeSegment.scaleRatio, 7 * treeSegment.scaleRatio);
             //orange
             stroke(255, 100, 0, alpha);
         }
+
         treeSegment.hasDrawnLeave = true;
     }
 
