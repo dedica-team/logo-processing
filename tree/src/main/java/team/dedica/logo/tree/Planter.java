@@ -1,5 +1,7 @@
 package team.dedica.logo.tree;
 
+import processing.core.PApplet;
+
 import java.util.List;
 
 public interface Planter {
@@ -7,9 +9,9 @@ public interface Planter {
     float GOLDEN_CUT = 1.618033988749f;
 
     /**
-     * @param height height of the area
-     * @param width width of the area
      * @return the planted plants
      */
-    List<TreeSegment> plant(final int height, final int width);
+    List<PlantSegment> plant();
+
+    void draw(PApplet applet, List<PlantSegment> plants);
 }

@@ -1,5 +1,6 @@
 package team.dedica.logo.tree;
 
+import processing.core.PApplet;
 import processing.core.PVector;
 
 import java.util.ArrayList;
@@ -16,11 +17,18 @@ import static team.dedica.logo.tree.Util.random;
 public class ForestPlanter implements Planter {
 
     static final float MAX_FOREST_HEIGHT_FACTOR = 0.385f;
+    private final int width;
+    private final int height;
+
+    public ForestPlanter(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
 
     @Override
-    public List<TreeSegment> plant(int height, int width) {
+    public List<PlantSegment> plant() {
 
-        List<TreeSegment> seeds = new ArrayList<>();
+        List<PlantSegment> seeds = new ArrayList<>();
         final float limit = height * (1 - MAX_FOREST_HEIGHT_FACTOR);
         int step = 2;
         for (int line = (int) limit; line < height; line += step) {
@@ -54,11 +62,30 @@ public class ForestPlanter implements Planter {
                 float halfStep = (float) (step / 2.5);
                 float y = line + random(-halfStep, halfStep);
 
-                seeds.add(new TreeSegment(new PVector(seedX, y), scaleRatio));
+                seeds.add(new PlantSegment(new PVector(seedX, y), new TreeParameters(scaleRatio)));
             }
         }
 
         return seeds;
+    }
+
+    @Override
+    public void draw(PApplet applet, List<PlantSegment> plants) {
+
+        applet.background(40, 40, 40);
+        applet.ellipseMode(PApplet.CENTER);
+        applet.stroke(255, 100, 0, 255);//orange
+        applet.smooth();
+
+
+        applet.noStroke();
+        applet.fill(60, 60, 60, 255);
+        float horizon = (1-MAX_FOREST_HEIGHT_FACTOR) * height +10;
+        applet.rect(0, 0, width, horizon);
+
+        plants.forEach(tree -> {
+            tree.draw(applet);
+        });
     }
 
     private PVector getPath(float scaleRatio, int width) {

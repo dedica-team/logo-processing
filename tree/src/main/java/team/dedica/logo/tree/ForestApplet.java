@@ -2,20 +2,26 @@ package team.dedica.logo.tree;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
-import processing.svg.PGraphicsSVG;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static team.dedica.logo.tree.ForestPlanter.MAX_FOREST_HEIGHT_FACTOR;
 
 /**
  * Tree image generator
  */
 public class ForestApplet extends PApplet {
 
-    List<TreeSegment> paths = new ArrayList<>();
+    /**
+     * The planter responsible for seeding the plants.
+     */
+    Planter planter;
+
+    /**
+     * The plants.
+     */
+    List<PlantSegment> plants = new ArrayList<>();
 
     /**
      * everything must be drawn in the last frame in order to appear in the svg
@@ -65,22 +71,18 @@ public class ForestApplet extends PApplet {
     @Override
     public void setup() {
 
-        background(40, 40, 40);
-        ellipseMode(CENTER);
-        stroke(255, 100, 0, 255);//orange
-        smooth();
+        planter = new ForestPlanter(width, height);
+        plants.addAll(planter.plant());
 
-        ForestPlanter forestPlanter = new ForestPlanter();
-        paths.addAll(forestPlanter.plant(height, width));
-        println("Planter planted " + paths.size() + " trees.");
+        println("Planter planted " + plants.size() + " trees.");
     }
 
     @Override
     public void draw() {
 
         boolean allFinished = true;
-        for (int i = 0; i < paths.size(); i++) {
-            if (!paths.get(i).isFinished) {
+        for (int i = 0; i < plants.size(); i++) {
+            if (!plants.get(i).isFinished) {
                 allFinished = false;
                 break;
             }
@@ -95,15 +97,8 @@ public class ForestApplet extends PApplet {
             background(40, 40, 40);
         }
 
-        noStroke();
-        fill(60, 60, 60, 255);
-        float horizon = (1-MAX_FOREST_HEIGHT_FACTOR) * height +10;
-        rect(0, 0, width, horizon);
+        planter.draw(this, plants);
 
-        paths.forEach(tree -> {
-            drawTwig(tree);
-            drawLeave(tree);
-        });
 
         if (svgOutput || pngOutput) {
             println("stopping output");
@@ -114,46 +109,4 @@ public class ForestApplet extends PApplet {
             exit();
         }
     }
-
-    /**
-     * recursive drawing of children
-     */
-    void drawTwig(TreeSegment treeSegment) {
-        for (int i = 0; i < treeSegment.children.size(); i++) {
-            drawTwig(treeSegment.children.get(i));
-        }
-        if (treeSegment.hasDrawnTwig) {
-            return;
-        }
-
-        strokeWeight(treeSegment.diameter);
-        line(treeSegment.lastLocation.x, treeSegment.lastLocation.y, treeSegment.location.x, treeSegment.location.y);
-        treeSegment.hasDrawnTwig = true;
-    }
-
-    void drawLeave(TreeSegment treeSegment) {
-        for (int i = 0; i < treeSegment.children.size(); i++) {
-            drawLeave(treeSegment.children.get(i));
-        }
-
-        if (treeSegment.hasDrawnLeave) {
-            return;
-        }
-
-        if (treeSegment.isFinished && treeSegment.bloom) {
-            noStroke();
-            float alpha = 0 + 255 * treeSegment.scaleRatio;
-            float alphaBloom = 155 + 100 * treeSegment.scaleRatio;
-            fill(255, 255, 255, alphaBloom);
-            ellipse(treeSegment.location.x, treeSegment.location.y, 15 * treeSegment.scaleRatio, 15 * treeSegment.scaleRatio);
-            //orange
-            fill(255, 100, 0, alphaBloom);
-            ellipse(treeSegment.location.x, treeSegment.location.y, 7 * treeSegment.scaleRatio, 7 * treeSegment.scaleRatio);
-            //orange
-            stroke(255, 100, 0, alpha);
-        }
-
-        treeSegment.hasDrawnLeave = true;
-    }
-
 }
