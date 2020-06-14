@@ -1,6 +1,7 @@
 package team.dedica.logo.tree;
 
 import processing.core.PVector;
+import team.dedica.logo.tree.items.PlantSegment;
 
 public interface GrowthParameters<T> {
 

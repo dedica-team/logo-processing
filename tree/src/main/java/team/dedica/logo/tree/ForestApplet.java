@@ -2,6 +2,7 @@ package team.dedica.logo.tree;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
+import team.dedica.logo.tree.items.PlantSegment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +17,7 @@ public class ForestApplet extends PApplet {
     /**
      * The planter responsible for seeding the plants.
      */
-    Planter planter;
+    List<Planter> planters = new ArrayList<>();
 
     /**
      * The plants.
@@ -71,10 +72,11 @@ public class ForestApplet extends PApplet {
     @Override
     public void setup() {
 
-        planter = new SingleTreePlanter(width, height);
-        plants.addAll(planter.plant());
+        planters.add(new HorizonPlanter(width, height));
+        planters.add(new SingleTreePlanter(width, height));
+        planters.forEach(planter -> planter.plant());
 
-        println("Planter planted " + plants.size() + " trees.");
+        println("Planters planted " + plants.size() + " objects.");
     }
 
     @Override
@@ -100,7 +102,7 @@ public class ForestApplet extends PApplet {
             background(40, 40, 40);
         }
 
-        planter.draw(this, plants);
+        planters.forEach(planter -> planter.draw(this));
 
         if (svgOutput || pngOutput) {
             println("stopping output");

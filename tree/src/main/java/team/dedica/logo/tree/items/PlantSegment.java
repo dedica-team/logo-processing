@@ -1,14 +1,15 @@
-package team.dedica.logo.tree;
+package team.dedica.logo.tree.items;
 
 import processing.core.PApplet;
 import processing.core.PVector;
+import team.dedica.logo.tree.GrowthParameters;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static team.dedica.logo.tree.Util.random;
 
-public class PlantSegment<T> {
+public class PlantSegment<T> implements Item {
 
 
     public final int iteration;

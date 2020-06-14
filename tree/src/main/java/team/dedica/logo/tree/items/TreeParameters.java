@@ -1,14 +1,13 @@
-package team.dedica.logo.tree.plants;
+package team.dedica.logo.tree.items;
 
 import processing.core.PVector;
 import team.dedica.logo.tree.GrowthParameters;
-import team.dedica.logo.tree.PlantSegment;
 
 import static team.dedica.logo.tree.Util.random;
 
 public class TreeParameters implements GrowthParameters<Tree> {
 
-    public static final double MIN_DIAMETER_TO_GROW = 1;
+    public static final double MIN_DIAMETER_TO_GROW = 0.5;
     public static final double MIN_BRANCH_PROBABILITY = 0.25;
 
     /**
@@ -20,7 +19,7 @@ public class TreeParameters implements GrowthParameters<Tree> {
     /**
      * branch growth velocity reduction per cycle
      */
-    public static final float VELOCITY_REDUCTION = 0.55f;
+    public static final float VELOCITY_REDUCTION = 0.75f;
     public static final int MAX_STEM_DIAMETER = 20;
     public static final int MIN_ITERATION_TO_BRANCH = 6;
 
@@ -33,7 +32,6 @@ public class TreeParameters implements GrowthParameters<Tree> {
                 this
         );
     }
-
 
     public boolean canStillGrow(PlantSegment<Tree> plantSegment) {
         return plantSegment.diameter > MIN_DIAMETER_TO_GROW;
@@ -83,8 +81,9 @@ public class TreeParameters implements GrowthParameters<Tree> {
     public PVector createGrowthVector(PlantSegment<Tree> plant) {
         PVector growthVector = new PVector(plant.velocity.x, plant.velocity.y);
         growthVector.normalize();
-        growthVector.mult(getVelocityReduction()); //slower growth
         growthVector.add(bump());
+        growthVector.normalize();
+        growthVector.mult(getVelocityReduction()); //slower growth
         growthVector.mult(getRandomVelocityFactor(plant) * plant.scaleFactor);
         return growthVector;
     }

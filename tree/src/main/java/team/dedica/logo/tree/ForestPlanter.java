@@ -2,7 +2,9 @@ package team.dedica.logo.tree;
 
 import processing.core.PApplet;
 import processing.core.PVector;
-import team.dedica.logo.tree.plants.TreeParameters;
+import team.dedica.logo.tree.items.PlantSegment;
+import team.dedica.logo.tree.items.Tree;
+import team.dedica.logo.tree.items.TreeParameters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,7 @@ public class ForestPlanter implements Planter {
     static final float MAX_FOREST_HEIGHT_FACTOR = 0.385f;
     private final int width;
     private final int height;
+    private final List<PlantSegment<Tree>> plants = new ArrayList<>();
 
     public ForestPlanter(int width, int height) {
         this.width = width;
@@ -27,11 +30,10 @@ public class ForestPlanter implements Planter {
     }
 
     @Override
-    public List<PlantSegment> plant() {
+    public int plant() {
 
 
         TreeParameters treeParameters = new TreeParameters();
-        List<PlantSegment> seeds = new ArrayList<>();
         final float limit = height * (1 - MAX_FOREST_HEIGHT_FACTOR);
         int step = 2;
         for (int line = (int) limit; line < height; line += step) {
@@ -65,15 +67,15 @@ public class ForestPlanter implements Planter {
                 float halfStep = (float) (step / 2.5);
                 float y = line + random(-halfStep, halfStep);
 
-                seeds.add(treeParameters.getSeed(new PVector(seedX, y), scaleRatio));
+                plants.add(treeParameters.getSeed(new PVector(seedX, y), scaleRatio));
             }
         }
 
-        return seeds;
+        return plants.size();
     }
 
     @Override
-    public void draw(PApplet applet, List<PlantSegment> plants) {
+    public void draw(PApplet applet) {
 
         applet.background(40, 40, 40);
         applet.ellipseMode(PApplet.CENTER);
