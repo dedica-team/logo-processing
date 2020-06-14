@@ -26,5 +26,9 @@ public interface GrowthParameters<T> {
 
     float getNewDiameterFactor();
 
-    boolean canStillBranch(PlantSegment<T> plant);
+    /**
+     * @param segment given segment
+     * @return true if it can have child branches
+     */
+    boolean canBranch(PlantSegment<T> segment);
 }

@@ -11,6 +11,7 @@ import static team.dedica.logo.tree.Util.random;
 public class PlantSegment<T> {
 
 
+    public final int iteration;
     private final GrowthParameters<T> growthParameters;
 
     private final PVector origin;
@@ -33,18 +34,21 @@ public class PlantSegment<T> {
     /**
      * child branches
      */
-    List<PlantSegment<T>> children = new ArrayList<>();
+    public List<PlantSegment<T>> children = new ArrayList<>();
+    private boolean isBranchingFinished = false;
 
     public PlantSegment(final PVector origin,
                  final PVector velocity,
                  final float diameter,
                  final float scaleFactor,
+                 final int iteration,
                  final GrowthParameters<T> growthParameters
     ) {
         this.origin = origin;
         this.velocity = velocity;
         this.diameter = diameter;
         this.scaleFactor = scaleFactor;
+        this.iteration = iteration;
         this.growthParameters = growthParameters;
 
         this.grow();
@@ -78,10 +82,10 @@ public class PlantSegment<T> {
      */
     void branch() {
 
-        if (isFinished)
+        if (isFinished || isBranchingFinished)
             return;
 
-        while (growthParameters.canStillBranch(this)) { // control length
+        while (growthParameters.canBranch(this)) { // control length
             if (random(0, 1) < branchProbability) {
 
                 children.add(
@@ -90,6 +94,7 @@ public class PlantSegment<T> {
                                 velocity,
                                 diameter * growthParameters.getNewDiameterFactor(),
                                 scaleFactor,
+                                iteration + 1,
                                 growthParameters
                         )
                 );
@@ -97,7 +102,7 @@ public class PlantSegment<T> {
             branchProbability *= growthParameters.getBranchProbabilityFactor();
         }
 
-        isFinished = true;
+        isBranchingFinished = true;
     }
 
     public void draw(PApplet applet) {

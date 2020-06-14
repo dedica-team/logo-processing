@@ -7,6 +7,8 @@ import team.dedica.logo.tree.plants.TreeParameters;
 import java.util.ArrayList;
 import java.util.List;
 
+import static team.dedica.logo.tree.Util.random;
+
 /**
  * Plants one single tree.
  */
@@ -24,10 +26,9 @@ public class SingleTreePlanter implements Planter {
     public List<PlantSegment> plant() {
         List<PlantSegment> plants = new ArrayList<>();
 
-        float x = width * (1 - 1 / GOLDEN_CUT);
-        x = width/2;
-        float y = height - height * (1 - 1 / GOLDEN_CUT);
-        y = height-10;
+        float x = (float) (width * 0.375 + random(-10, 10));
+
+        float y = (float) (height * 0.8);
 
         TreeParameters parameters = new TreeParameters();
         plants.add(parameters.getSeed(new PVector(x, y), 1));

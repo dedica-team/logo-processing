@@ -80,6 +80,7 @@ public class ForestApplet extends PApplet {
     @Override
     public void draw() {
 
+        /*
         boolean allFinished = true;
         for (int i = 0; i < plants.size(); i++) {
             if (!plants.get(i).isFinished) {
@@ -92,6 +93,8 @@ public class ForestApplet extends PApplet {
             println("Waiting for trees to have finished growing.");
             return;
         }
+
+         */
 
         if (svgOutput || pngOutput) {
             background(40, 40, 40);
