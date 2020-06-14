@@ -9,11 +9,11 @@ import java.util.List;
 
 import static team.dedica.logo.tree.Util.random;
 
-public class PlantSegment<T> implements Item {
+public class PlantSegment implements Item {
 
 
     public final int iteration;
-    private final GrowthParameters<T> growthParameters;
+    private final GrowthParameters growthParameters;
 
     private final PVector origin;
     private PVector targetLocation;
@@ -35,7 +35,7 @@ public class PlantSegment<T> implements Item {
     /**
      * child branches
      */
-    public List<PlantSegment<T>> children = new ArrayList<>();
+    public List<PlantSegment> children = new ArrayList<>();
     private boolean isBranchingFinished = false;
 
     public PlantSegment(final PVector origin,
@@ -43,7 +43,7 @@ public class PlantSegment<T> implements Item {
                  final float diameter,
                  final float scaleFactor,
                  final int iteration,
-                 final GrowthParameters<T> growthParameters
+                 final GrowthParameters growthParameters
     ) {
         this.origin = origin;
         this.velocity = velocity;
@@ -90,7 +90,7 @@ public class PlantSegment<T> implements Item {
             if (random(0, 1) < branchProbability) {
 
                 children.add(
-                        new PlantSegment<T>(
+                        new PlantSegment(
                                 new PVector(targetLocation.x, targetLocation.y),
                                 velocity,
                                 diameter * growthParameters.getNewDiameterFactor(),
@@ -123,6 +123,7 @@ public class PlantSegment<T> implements Item {
             return;
         }
 
+        applet.stroke(255, 100, 0, 255);//orange
         applet.strokeWeight(diameter);
         applet.line(origin.x, origin.y, targetLocation.x, targetLocation.y);
         hasDrawnTwig = true;

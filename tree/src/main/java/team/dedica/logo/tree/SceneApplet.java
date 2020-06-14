@@ -2,17 +2,20 @@ package team.dedica.logo.tree;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
+import team.dedica.logo.tree.items.FlowerParams;
 import team.dedica.logo.tree.items.PlantSegment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static team.dedica.logo.tree.ForestPlanter.MAX_FOREST_HEIGHT_FACTOR;
+
 
 /**
  * Tree image generator
  */
-public class ForestApplet extends PApplet {
+public class SceneApplet extends PApplet {
 
     /**
      * The planter responsible for seeding the plants.
@@ -34,7 +37,7 @@ public class ForestApplet extends PApplet {
      * @param args use "--svg" to create svg output
      */
     public static void main(String[] args) {
-        PApplet.main(ForestApplet.class.getName(), args);
+        PApplet.main(SceneApplet.class.getName(), args);
     }
 
     @Override
@@ -72,7 +75,9 @@ public class ForestApplet extends PApplet {
     @Override
     public void setup() {
 
-        planters.add(new HorizonPlanter(width, height));
+        float horizonHeightFactor = MAX_FOREST_HEIGHT_FACTOR;
+        planters.add(new HorizonPlanter(width, height, horizonHeightFactor));
+        planters.add(new ForestPlanter(width, height, new FlowerParams()));
         planters.add(new SingleTreePlanter(width, height));
         planters.forEach(planter -> planter.plant());
 

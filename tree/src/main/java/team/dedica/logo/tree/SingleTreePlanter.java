@@ -28,7 +28,7 @@ public class SingleTreePlanter implements Planter {
     @Override
     public int plant() {
 
-        float x = (float) (width * 0.375 + random(-10, 10));
+        float x = (float) (width * 0.2305 + random(-10, 10));
         float y = (float) (height * 0.8);
 
         TreeParameters parameters = new TreeParameters();
@@ -39,17 +39,8 @@ public class SingleTreePlanter implements Planter {
 
     @Override
     public void draw(PApplet applet) {
-        applet.background(40, 40, 40);
-        applet.ellipseMode(PApplet.CENTER);
-        applet.smooth();
 
 
-        applet.noStroke();
-        applet.fill(60, 60, 60, 255);
-        float horizon = (float) (height * 0.4);
-        applet.rect(0, 0, width, horizon);
-
-        applet.stroke(255, 100, 0, 255);//orange
         plants.forEach(tree -> {
             tree.draw(applet);
         });

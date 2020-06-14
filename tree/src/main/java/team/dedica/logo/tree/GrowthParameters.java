@@ -3,11 +3,11 @@ package team.dedica.logo.tree;
 import processing.core.PVector;
 import team.dedica.logo.tree.items.PlantSegment;
 
-public interface GrowthParameters<T> {
+public interface GrowthParameters {
 
-    PlantSegment<T> getSeed(PVector origin, float scaleRatio);
+    PlantSegment getSeed(PVector origin, float scaleRatio);
 
-    boolean canStillGrow(PlantSegment<T> plant);
+    boolean canStillGrow(PlantSegment plant);
 
     float getVelocityReduction();
 
@@ -17,13 +17,13 @@ public interface GrowthParameters<T> {
      */
     PVector bump();
 
-    float getRandomVelocityFactor(PlantSegment<T> plant);
+    float getRandomVelocityFactor(PlantSegment plant);
 
     boolean isWithinBounds(PVector location);
 
     float getBranchProbabilityFactor();
 
-    PVector createGrowthVector(PlantSegment<T> plant);
+    PVector createGrowthVector(PlantSegment plant);
 
     float getNewDiameterFactor();
 
@@ -31,5 +31,5 @@ public interface GrowthParameters<T> {
      * @param segment given segment
      * @return true if it can have child branches
      */
-    boolean canBranch(PlantSegment<T> segment);
+    boolean canBranch(PlantSegment segment);
 }

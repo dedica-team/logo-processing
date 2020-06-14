@@ -11,5 +11,9 @@ public interface Planter {
      */
     int plant();
 
+    /**
+     * Draws the planted items.
+     * @param applet aplpet to draw on
+     */
     void draw(PApplet applet);
 }

@@ -22,18 +22,18 @@ public class ForestPlanter implements Planter {
     static final float MAX_FOREST_HEIGHT_FACTOR = 0.385f;
     private final int width;
     private final int height;
-    private final List<PlantSegment<Tree>> plants = new ArrayList<>();
+    private final GrowthParameters parameters;
+    private final List<PlantSegment> plants = new ArrayList<>();
 
-    public ForestPlanter(int width, int height) {
+    public ForestPlanter(int width, int height, GrowthParameters parameters) {
         this.width = width;
         this.height = height;
+        this.parameters = parameters;
     }
 
     @Override
     public int plant() {
 
-
-        TreeParameters treeParameters = new TreeParameters();
         final float limit = height * (1 - MAX_FOREST_HEIGHT_FACTOR);
         int step = 2;
         for (int line = (int) limit; line < height; line += step) {
@@ -67,7 +67,7 @@ public class ForestPlanter implements Planter {
                 float halfStep = (float) (step / 2.5);
                 float y = line + random(-halfStep, halfStep);
 
-                plants.add(treeParameters.getSeed(new PVector(seedX, y), scaleRatio));
+                plants.add(parameters.getSeed(new PVector(seedX, y), scaleRatio));
             }
         }
 
