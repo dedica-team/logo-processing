@@ -2,6 +2,7 @@ package team.dedica.logo.tree;
 
 import processing.core.PApplet;
 import processing.core.PVector;
+import team.dedica.logo.tree.plants.TreeParameters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,8 @@ public class ForestPlanter implements Planter {
     @Override
     public List<PlantSegment> plant() {
 
+
+        TreeParameters treeParameters = new TreeParameters();
         List<PlantSegment> seeds = new ArrayList<>();
         final float limit = height * (1 - MAX_FOREST_HEIGHT_FACTOR);
         int step = 2;
@@ -62,7 +65,7 @@ public class ForestPlanter implements Planter {
                 float halfStep = (float) (step / 2.5);
                 float y = line + random(-halfStep, halfStep);
 
-                seeds.add(new PlantSegment(new PVector(seedX, y), new TreeParameters(scaleRatio)));
+                seeds.add(treeParameters.getSeed(new PVector(seedX, y), scaleRatio));
             }
         }
 

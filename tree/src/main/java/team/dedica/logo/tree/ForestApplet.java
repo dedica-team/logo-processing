@@ -71,7 +71,7 @@ public class ForestApplet extends PApplet {
     @Override
     public void setup() {
 
-        planter = new ForestPlanter(width, height);
+        planter = new SingleTreePlanter(width, height);
         plants.addAll(planter.plant());
 
         println("Planter planted " + plants.size() + " trees.");
@@ -98,7 +98,6 @@ public class ForestApplet extends PApplet {
         }
 
         planter.draw(this, plants);
-
 
         if (svgOutput || pngOutput) {
             println("stopping output");

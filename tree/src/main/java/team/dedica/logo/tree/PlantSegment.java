@@ -8,12 +8,16 @@ import java.util.List;
 
 import static team.dedica.logo.tree.Util.random;
 
-public class PlantSegment {
+public class PlantSegment<T> {
 
-    private final GrowthParameters growthParameters;
 
-    PVector origin;
-    PVector targetLocation;
+    private final GrowthParameters<T> growthParameters;
+
+    private final PVector origin;
+    private PVector targetLocation;
+    public final float scaleFactor;
+    public final float diameter;
+    public final PVector velocity;
     boolean isFinished = false;
     boolean bloom = false;
 
@@ -24,19 +28,29 @@ public class PlantSegment {
     /**
      * Probability of branching, decreased with every iteration
      */
-    float branchProbability = 1;
+    public float branchProbability = 1;
 
     /**
      * child branches
      */
-    List<PlantSegment> children = new ArrayList<>();
+    List<PlantSegment<T>> children = new ArrayList<>();
 
-    PlantSegment(PVector origin, GrowthParameters growthParameters) {
+    public PlantSegment(final PVector origin,
+                 final PVector velocity,
+                 final float diameter,
+                 final float scaleFactor,
+                 final GrowthParameters<T> growthParameters
+    ) {
         this.origin = origin;
+        this.velocity = velocity;
+        this.diameter = diameter;
+        this.scaleFactor = scaleFactor;
         this.growthParameters = growthParameters;
+
         this.grow();
         this.branch();
     }
+
 
     /**
      * computes the grow destination
@@ -46,8 +60,8 @@ public class PlantSegment {
         targetLocation = new PVector(origin.x, origin.y);
         if (growthParameters.isWithinBounds(targetLocation)) {
 
-            if (growthParameters.canStillGrow()) {
-                targetLocation.add(growthParameters.createGrowthVector());
+            if (growthParameters.canStillGrow(this)) {
+                targetLocation.add(growthParameters.createGrowthVector(this));
             } else {
                 //too small
                 isFinished = true;
@@ -67,13 +81,20 @@ public class PlantSegment {
         if (isFinished)
             return;
 
-        while (branchProbability > GrowthParameters.MIN_BRANCH_CAPACITY) { // control length
+        while (growthParameters.canStillBranch(this)) { // control length
             if (random(0, 1) < branchProbability) {
+
                 children.add(
-                        new PlantSegment(new PVector(targetLocation.x, targetLocation.y), growthParameters.branch())
+                        new PlantSegment<T>(
+                                new PVector(targetLocation.x, targetLocation.y),
+                                velocity,
+                                diameter * growthParameters.getNewDiameterFactor(),
+                                scaleFactor,
+                                growthParameters
+                        )
                 );
             }
-            branchProbability *= growthParameters.getBranchProbabilityReduction();
+            branchProbability *= growthParameters.getBranchProbabilityFactor();
         }
 
         isFinished = true;
@@ -96,7 +117,7 @@ public class PlantSegment {
             return;
         }
 
-        applet.strokeWeight(growthParameters.diameter);
+        applet.strokeWeight(diameter);
         applet.line(origin.x, origin.y, targetLocation.x, targetLocation.y);
         hasDrawnTwig = true;
     }
@@ -112,13 +133,13 @@ public class PlantSegment {
 
         if (isFinished && bloom) {
             applet.noStroke();
-            float alpha = 0 + 255 * growthParameters.scaleRatio;
-            float alphaBloom = 155 + 100 * growthParameters.scaleRatio;
+            float alpha = 0 + 255 * scaleFactor;
+            float alphaBloom = 155 + 100 * scaleFactor;
             applet.fill(255, 255, 255, alphaBloom);
-            applet.ellipse(targetLocation.x, targetLocation.y, 15 * growthParameters.scaleRatio, 15 * growthParameters.scaleRatio);
+            applet.ellipse(targetLocation.x, targetLocation.y, 15 * scaleFactor, 15 * scaleFactor);
             //orange
             applet.fill(255, 100, 0, alphaBloom);
-            applet.ellipse(targetLocation.x, targetLocation.y, 7 * growthParameters.scaleRatio, 7 * growthParameters.scaleRatio);
+            applet.ellipse(targetLocation.x, targetLocation.y, 7 * scaleFactor, 7 * scaleFactor);
             //orange
             applet.stroke(255, 100, 0, alpha);
         }
