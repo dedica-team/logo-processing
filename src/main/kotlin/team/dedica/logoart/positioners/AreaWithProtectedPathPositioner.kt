@@ -19,6 +19,7 @@ private const val MARGIN = 10
 internal class AreaWithProtectedPathPositioner(
     private val width: Int,
     private val height: Int,
+    private val horizonHeightFactor: Float,
     private val seeder: Seeder
 ) : Positioner {
 
@@ -26,7 +27,7 @@ internal class AreaWithProtectedPathPositioner(
 
     override fun calculate(): Int {
 
-        val limit = height * (1 - MAX_FOREST_HEIGHT_FACTOR)
+        val limit = height * (1 - horizonHeightFactor)
         var step = 2
         var line = limit.toInt()
         while (line < height) {
@@ -99,15 +100,19 @@ internal class AreaWithProtectedPathPositioner(
     }
 
     override fun draw(applet: PApplet) {
+        drawAreabackground(applet)
+        plants.forEach(Consumer { plant -> plant.draw(applet) })
+    }
+
+    private fun drawAreabackground(applet: PApplet) {
         applet.background(40f, 40f, 40f)
         applet.ellipseMode(PApplet.CENTER)
         applet.stroke(255f, 100f, 0f, 255f) //orange
         applet.smooth()
         applet.noStroke()
         applet.fill(60f, 60f, 60f, 255f)
-        val horizon = (1 - MAX_FOREST_HEIGHT_FACTOR) * height + MARGIN
+        val horizon = (1 - horizonHeightFactor) * height + MARGIN
         applet.rect(0f, 0f, width.toFloat(), horizon)
-        plants.forEach(Consumer { plant -> plant.draw(applet) })
     }
 
     private fun getProtectedAreaOnPath(scaleRatio: Float, width: Int): PVector {
@@ -118,7 +123,7 @@ internal class AreaWithProtectedPathPositioner(
     }
 
     companion object {
-        const val MAX_FOREST_HEIGHT_FACTOR = 0.385f
+
         const val GOLDEN_CUT = 1.618033988749f
     }
 }

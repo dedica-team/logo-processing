@@ -2,6 +2,7 @@ package team.dedica.logoart.positioners
 
 import processing.core.PApplet
 
+//TODO replace with SingleItemPositioner and Horizon Drawable
 class HorizonPositioner(
     private val width: Int,
     private val height: Int,
