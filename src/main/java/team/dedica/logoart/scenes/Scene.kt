@@ -1,6 +1,6 @@
-package team.dedica.logo.scenes
+package team.dedica.logoart.scenes
 
-import team.dedica.logo.scenes.forest.SceneApplet
+import team.dedica.logoart.scenes.forest.SceneApplet
 
 interface Scene {
     fun setup(width: Int, height: Int)

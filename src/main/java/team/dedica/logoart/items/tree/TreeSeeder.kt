@@ -1,10 +1,10 @@
-package team.dedica.logo.items.tree
+package team.dedica.logoart.items.tree
 
 import processing.core.PVector
-import team.dedica.logo.items.Drawable
-import team.dedica.logo.items.Seeder
-import team.dedica.logo.Util
-import team.dedica.logo.items.PlantSegment
+import team.dedica.logoart.items.Drawable
+import team.dedica.logoart.items.Seeder
+import team.dedica.logoart.Util
+import team.dedica.logoart.items.PlantSegment
 
 class TreeSeeder : Seeder {
 

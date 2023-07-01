@@ -1,4 +1,4 @@
-package team.dedica.logo
+package team.dedica.logoart
 
 import java.util.*
 

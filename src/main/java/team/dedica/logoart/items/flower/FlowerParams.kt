@@ -1,9 +1,9 @@
-package team.dedica.logo.items.flower
+package team.dedica.logoart.items.flower
 
 import processing.core.PVector
-import team.dedica.logo.Util
-import team.dedica.logo.items.GrowthParameters
-import team.dedica.logo.items.PlantSegment
+import team.dedica.logoart.Util
+import team.dedica.logoart.items.GrowthParameters
+import team.dedica.logoart.items.PlantSegment
 
 internal class FlowerParams : GrowthParameters {
 

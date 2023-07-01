@@ -1,4 +1,4 @@
-package team.dedica.logo.positioners
+package team.dedica.logoart.positioners
 
 import processing.core.PApplet
 

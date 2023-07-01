@@ -1,12 +1,12 @@
-package team.dedica.logo.scenes.forest
+package team.dedica.logoart.scenes.forest
 
-import team.dedica.logo.positioners.AreaWithProtectedPathPositioner
-import team.dedica.logo.scenes.Scene
-import team.dedica.logo.positioners.Positioner
-import team.dedica.logo.positioners.SingleItemPositioner
-import team.dedica.logo.items.flower.FlowerSeeder
-import team.dedica.logo.positioners.HorizonPositioner
-import team.dedica.logo.items.tree.TreeSeeder
+import team.dedica.logoart.positioners.AreaWithProtectedPathPositioner
+import team.dedica.logoart.scenes.Scene
+import team.dedica.logoart.positioners.Positioner
+import team.dedica.logoart.positioners.SingleItemPositioner
+import team.dedica.logoart.items.flower.FlowerSeeder
+import team.dedica.logoart.positioners.HorizonPositioner
+import team.dedica.logoart.items.tree.TreeSeeder
 
 class Forest : Scene {
 

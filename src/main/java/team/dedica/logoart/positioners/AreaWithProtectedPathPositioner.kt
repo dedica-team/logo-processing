@@ -1,10 +1,10 @@
-package team.dedica.logo.positioners
+package team.dedica.logoart.positioners
 
 import processing.core.PApplet
 import processing.core.PVector
-import team.dedica.logo.Util
-import team.dedica.logo.items.Drawable
-import team.dedica.logo.items.Seeder
+import team.dedica.logoart.Util
+import team.dedica.logoart.items.Drawable
+import team.dedica.logoart.items.Seeder
 import java.util.function.Consumer
 import kotlin.math.max
 

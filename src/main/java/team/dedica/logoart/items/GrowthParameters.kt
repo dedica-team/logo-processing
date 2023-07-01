@@ -1,4 +1,4 @@
-package team.dedica.logo.items
+package team.dedica.logoart.items
 
 import processing.core.PVector
 

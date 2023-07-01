@@ -1,8 +1,8 @@
-package team.dedica.logo.items
+package team.dedica.logoart.items
 
 import processing.core.PApplet
 import processing.core.PVector
-import team.dedica.logo.Util
+import team.dedica.logoart.Util
 
 internal class PlantSegment(
     private val origin: PVector,

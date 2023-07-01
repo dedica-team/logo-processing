@@ -1,7 +1,7 @@
-package team.dedica.logo.scenes.forest
+package team.dedica.logoart.scenes.forest
 
 import processing.core.PApplet
-import team.dedica.logo.scenes.Scene
+import team.dedica.logoart.scenes.Scene
 
 /**
  * Tree image generator
