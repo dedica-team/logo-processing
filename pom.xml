@@ -7,7 +7,6 @@
     <name>Logo Processing</name>
 
     <properties>
-        <processing.version>3.3.6</processing.version>
         <kotlin.version>1.8.22</kotlin.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
@@ -19,6 +18,44 @@
             <url>https://jitpack.io</url>
         </repository>
     </repositories>
+
+    <dependencies>
+        <!-- Core requirements -->
+        <dependency>
+            <groupId>com.github.micycle1</groupId>
+            <artifactId>processing-core-4</artifactId>
+            <version>4.2.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-all</artifactId>
+            <version>1.12</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-jdk8</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-test</artifactId>
+            <version>${kotlin.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-jdk8</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-jdk8</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
@@ -74,54 +111,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <dependencies>
-        <!-- Core requirements -->
-        <dependency>
-            <groupId>com.github.micycle1</groupId>
-            <artifactId>processing-core-4</artifactId>
-            <version>4.2.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>batik-all</artifactId>
-            <version>1.12</version>
-        </dependency>
-
-        <!-- PDF requirements -->
-        <dependency>
-            <groupId>org.processing</groupId>
-            <artifactId>pdf</artifactId>
-            <version>${processing.version}</version>
-        </dependency>
-        <!-- Networking requirements -->
-        <dependency>
-            <groupId>org.processing</groupId>
-            <artifactId>net</artifactId>
-            <version>${processing.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
-            <version>${kotlin.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-test</artifactId>
-            <version>${kotlin.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
-            <version>${kotlin.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
-            <version>${kotlin.version}</version>
-        </dependency>
-    </dependencies>
 
 </project>
