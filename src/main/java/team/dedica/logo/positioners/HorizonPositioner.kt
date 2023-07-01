@@ -1,7 +1,6 @@
 package team.dedica.logo.positioners
 
 import processing.core.PApplet
-import team.dedica.logo.positioners.Positioner
 
 class HorizonPositioner(
     private val width: Int,

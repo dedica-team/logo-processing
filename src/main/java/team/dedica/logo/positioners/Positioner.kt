@@ -5,12 +5,14 @@ import processing.core.PApplet
 interface Positioner {
 
     /**
+     * Perform necessary calculates before drawing.
+     *
      * @return the number of planted items
      */
     fun calculate(): Int
 
     /**
-     * Draws the planted items.
+     * Draws the Drawables
      *
      * @param applet applet to draw on
      */

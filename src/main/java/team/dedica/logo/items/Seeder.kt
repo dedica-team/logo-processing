@@ -1,8 +1,10 @@
 package team.dedica.logo.items
 
 import processing.core.PVector
-import team.dedica.logo.items.Drawable
 
+/**
+ * Responsible to initialise a Drawable at a given location.
+ */
 interface Seeder {
     fun getSeed(origin: PVector, scaleRatio: Float): Drawable
 }

@@ -10,9 +10,6 @@ import team.dedica.logo.items.tree.TreeSeeder
 
 class Forest : Scene {
 
-    /**
-     * The planter responsible for seeding the plants.
-     */
     private val positioners: MutableList<Positioner> = mutableListOf()
 
     override fun setup(width: Int, height: Int) {
