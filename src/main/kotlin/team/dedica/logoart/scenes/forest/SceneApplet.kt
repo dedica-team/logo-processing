@@ -10,7 +10,7 @@ class SceneApplet : PApplet() {
 
     private lateinit var scene: Scene
     override fun settings() {
-        size(1920, 1080, SVG, "tree.svg")
+        size(1920, 1080, SVG, "forest.svg")
     }
 
     override fun setup() {
