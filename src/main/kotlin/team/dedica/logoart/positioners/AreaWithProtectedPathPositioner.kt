@@ -28,7 +28,7 @@ internal class AreaWithProtectedPathPositioner(
     override fun calculate(): Int {
 
         val limit = height * (1 - horizonHeightFactor)
-        var step = 2
+        var step = 5
         var line = limit.toInt()
         while (line < height) {
 
@@ -105,14 +105,9 @@ internal class AreaWithProtectedPathPositioner(
     }
 
     private fun drawAreabackground(applet: PApplet) {
-        applet.background(40f, 40f, 40f)
-        applet.ellipseMode(PApplet.CENTER)
-        applet.stroke(255f, 100f, 0f, 255f) //orange
-        applet.smooth()
-        applet.noStroke()
-        applet.fill(60f, 60f, 60f, 255f)
-        val horizon = (1 - horizonHeightFactor) * height + MARGIN
-        applet.rect(0f, 0f, width.toFloat(), horizon)
+        applet.fill(40f, 40f, 40f, 255f)
+        val horizon = (1 - horizonHeightFactor) * height
+        applet.rect(0f, horizon, width.toFloat(), height.toFloat())
     }
 
     private fun getProtectedAreaOnPath(scaleRatio: Float, width: Int): PVector {

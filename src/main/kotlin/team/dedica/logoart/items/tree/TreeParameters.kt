@@ -17,15 +17,15 @@ internal class TreeParameters : GrowthParameters {
      * @return bump vector
      */
     override fun bump(): PVector {
-        val upwards = -0.5f
-        val downwards = 0.5f
-        val bump = PVector(Util.random(-1f, 1f), Util.random(upwards, downwards))
-        bump.mult(0.5f)
+        val xDirection = 1.95f
+        val yDirection = 0.95f
+        val bump = PVector(Util.random(-xDirection, xDirection), Util.random(-yDirection, yDirection))
+        bump.mult(0.6f)
         return bump
     }
 
     override fun getRandomVelocityFactor(plant: PlantSegment): Float {
-        return Util.random(20f, 40f) * plant.scaleFactor
+        return Util.random(30f, 40f) * plant.scaleFactor
     }
 
     override fun isWithinBounds(location: PVector): Boolean {
@@ -52,7 +52,6 @@ internal class TreeParameters : GrowthParameters {
         val growthVector = PVector(plant.velocity.x, plant.velocity.y)
         growthVector.normalize()
         growthVector.add(bump())
-        growthVector.normalize()
         growthVector.mult(velocityReduction) //slower growth
         growthVector.mult(getRandomVelocityFactor(plant) * plant.scaleFactor)
         return growthVector
@@ -71,7 +70,7 @@ internal class TreeParameters : GrowthParameters {
         /**
          * branch growth velocity reduction per cycle
          */
-        const val velocityReduction = 0.75f
+        const val velocityReduction = 0.65f
         const val MAX_STEM_DIAMETER = 20
         const val MIN_ITERATION_TO_BRANCH = 6
     }
