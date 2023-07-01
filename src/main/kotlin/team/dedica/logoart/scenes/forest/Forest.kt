@@ -1,5 +1,7 @@
 package team.dedica.logoart.scenes.forest
 
+import processing.core.PVector
+import team.dedica.logoart.Util
 import team.dedica.logoart.positioners.AreaWithProtectedPathPositioner
 import team.dedica.logoart.scenes.Scene
 import team.dedica.logoart.positioners.Positioner
@@ -18,10 +20,14 @@ class Forest : Scene {
 
         positioners.add(HorizonPositioner(width, height, getHorizonHeightFactor()))
         positioners.add(AreaWithProtectedPathPositioner(width, height, getHorizonHeightFactor(), FlowerSeeder()))
-        positioners.add(SingleItemPositioner(width, height, TreeSeeder()))
+        positioners.add(SingleItemPositioner(getSingleTreePosition(width, height), TreeSeeder()))
 
         val size = positioners.sumOf { positioner -> positioner.calculate() }
         println("Planters planted $size objects.")
+    }
+
+    private fun getSingleTreePosition(width: Int, height: Int): PVector {
+        return PVector((width * 0.2305 + Util.random(-10f, 10f)).toFloat(), (height * 0.8).toFloat())
     }
 
     override fun draw(sceneApplet: SceneApplet) {
