@@ -3,13 +3,16 @@ package team.dedica.logo.forest.items
 import processing.core.PApplet
 import processing.core.PVector
 import java.util.function.Consumer
+import kotlin.math.max
+
+private const val MARGIN = 10
 
 /**
  * Plants a forest with a path through the trees.
  *
  *
  */
-class ForestPositioner(
+internal class ForestPositioner(
     private val width: Int,
     private val height: Int,
     private val parameters: GrowthParameters
@@ -18,13 +21,14 @@ class ForestPositioner(
     private val plants: MutableList<Drawable> = ArrayList()
 
     override fun calculate(): Int {
+
         val limit = height * (1 - MAX_FOREST_HEIGHT_FACTOR)
         var step = 2
         var line = limit.toInt()
         while (line < height) {
-            val chance = (height - line) / limit
-            var test = Util.random(0f, 1f)
-            if (test > chance) {
+
+            val probability = (height - line) / limit
+            if (hasNoChanceToPosition(probability)) {
                 line += step
                 continue
             }
@@ -32,33 +36,61 @@ class ForestPositioner(
             //scale
             val scaleRatio = (line - limit) / (height - limit)
             step = (step * (1.32 + scaleRatio)).toInt()
-            if (scaleRatio < 0.01) {
+            if (isTooFarAway(scaleRatio)) {
                 line += step
                 continue
             }
-            val scRSq = (1 - scaleRatio) * (1 - scaleRatio / 2) //very low for "near" lines
-            //draw the actual number of trees on this line
-            val path = getPath(scaleRatio, width)
-            var x = 10
-            while (x < width - 10) {
-                test = Util.random(0f, 1f)
-                if (test > scRSq) {
-                    x = (x + Math.max(1f, 100 * scaleRatio)).toInt()
-                    continue
-                }
-                if (x > path.x && x < path.y) {
-                    x = (x + Math.max(1f, 100 * scaleRatio)).toInt()
-                    continue
-                }
-                val seedX = Util.random((x - 10).toFloat(), (x + 10).toFloat())
-                val halfStep = (step / 2.5).toFloat()
-                val y = line + Util.random(-halfStep, halfStep)
-                plants.add(parameters.getSeed(PVector(seedX, y), scaleRatio))
-                x = (x + Math.max(1f, 100 * scaleRatio)).toInt()
-            }
+
+            drawItemsOnLine(scaleRatio, step, line)
             line += step
         }
         return plants.size
+    }
+
+    /**
+     * draw the actual number of trees on this line
+     */
+    private fun drawItemsOnLine(scaleRatio: Float, step: Int, line: Int) {
+
+        val scRSq = (1 - scaleRatio) * (1 - scaleRatio / 2) //very low for "near" lines
+        val path = getProtectedAreaOnPath(scaleRatio, width)
+        var x = MARGIN
+        while (x < width - MARGIN) {
+            val xPos = (x + max(1f, 100 * scaleRatio)).toInt()
+            if (hasNoChanceToPosition(scRSq)) {
+                x = xPos
+                continue
+            }
+            if (x > path.x && x < path.y) {
+                x = xPos
+                continue
+            }
+
+            val seed = createSeedAt(x, step, line, scaleRatio)
+            plants.add(seed)
+            x = xPos
+        }
+    }
+
+    private fun createSeedAt(
+        x: Int,
+        step: Int,
+        line: Int,
+        scaleRatio: Float
+    ): PlantSegment {
+
+        val seedX = Util.random((x - MARGIN).toFloat(), (x + MARGIN).toFloat())
+        val halfStep = (step / 2.5).toFloat()
+        val y = line + Util.random(-halfStep, halfStep)
+
+        return parameters.getSeed(PVector(seedX, y), scaleRatio)
+    }
+
+    private fun isTooFarAway(scaleRatio: Float) = scaleRatio < 0.01
+
+    private fun hasNoChanceToPosition(probability: Float): Boolean {
+        val test = Util.random(0f, 1f)
+        return test > probability
     }
 
     override fun draw(applet: PApplet) {
@@ -68,12 +100,12 @@ class ForestPositioner(
         applet.smooth()
         applet.noStroke()
         applet.fill(60f, 60f, 60f, 255f)
-        val horizon = (1 - MAX_FOREST_HEIGHT_FACTOR) * height + 10
+        val horizon = (1 - MAX_FOREST_HEIGHT_FACTOR) * height + MARGIN
         applet.rect(0f, 0f, width.toFloat(), horizon)
         plants.forEach(Consumer { plant -> plant.draw(applet) })
     }
 
-    private fun getPath(scaleRatio: Float, width: Int): PVector {
+    private fun getProtectedAreaOnPath(scaleRatio: Float, width: Int): PVector {
         val goldenCut = 1 - 1 / GOLDEN_CUT
         val pathWidth = Util.random(300f, 320f) * scaleRatio
         val center = width * goldenCut

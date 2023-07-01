@@ -2,7 +2,7 @@ package team.dedica.logo.forest.items
 
 import processing.core.PVector
 
-interface GrowthParameters {
+internal interface GrowthParameters {
 
     fun getVelocityReduction(): Float
     fun getBranchProbabilityFactor(): Float
