@@ -1,24 +1,28 @@
-package team.dedica.logo.forest.items
+package team.dedica.logo.positioners
 
 import processing.core.PApplet
 import processing.core.PVector
+import team.dedica.logo.Util
+import team.dedica.logo.items.Drawable
+import team.dedica.logo.items.Seeder
 import java.util.function.Consumer
 import kotlin.math.max
 
 private const val MARGIN = 10
+
 
 /**
  * Plants a forest with a path through the trees.
  *
  *
  */
-internal class ForestPositioner(
+internal class AreaWithProtectedPathPositioner(
     private val width: Int,
     private val height: Int,
-    private val parameters: GrowthParameters
+    private val seeder: Seeder
 ) : Positioner {
 
-    private val plants: MutableList<Drawable> = ArrayList()
+    private val plants: MutableList<Drawable> = mutableListOf()
 
     override fun calculate(): Int {
 
@@ -44,6 +48,7 @@ internal class ForestPositioner(
             drawItemsOnLine(scaleRatio, step, line)
             line += step
         }
+
         return plants.size
     }
 
@@ -77,13 +82,13 @@ internal class ForestPositioner(
         step: Int,
         line: Int,
         scaleRatio: Float
-    ): PlantSegment {
+    ): Drawable {
 
         val seedX = Util.random((x - MARGIN).toFloat(), (x + MARGIN).toFloat())
         val halfStep = (step / 2.5).toFloat()
         val y = line + Util.random(-halfStep, halfStep)
 
-        return parameters.getSeed(PVector(seedX, y), scaleRatio)
+        return seeder.getSeed(PVector(seedX, y), scaleRatio)
     }
 
     private fun isTooFarAway(scaleRatio: Float) = scaleRatio < 0.01

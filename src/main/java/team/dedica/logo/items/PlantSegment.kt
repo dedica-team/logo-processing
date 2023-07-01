@@ -1,7 +1,8 @@
-package team.dedica.logo.forest.items
+package team.dedica.logo.items
 
 import processing.core.PApplet
 import processing.core.PVector
+import team.dedica.logo.Util
 
 internal class PlantSegment(
     private val origin: PVector,
@@ -88,7 +89,7 @@ internal class PlantSegment(
     /**
      * recursive drawing of children
      */
-    fun drawTwig(applet: PApplet) {
+    private fun drawTwig(applet: PApplet) {
         for (i in children.indices) {
             children[i].drawTwig(applet)
         }
@@ -97,11 +98,11 @@ internal class PlantSegment(
         }
         applet.stroke(255f, 100f, 0f, 255f) //orange
         applet.strokeWeight(diameter)
-        applet.line(origin.x, origin.y, targetLocation!!.x, targetLocation!!.y)
+        applet.line(origin.x, origin.y, targetLocation.x, targetLocation.y)
         hasDrawnTwig = true
     }
 
-    fun drawLeave(applet: PApplet) {
+    private fun drawLeave(applet: PApplet) {
         for (i in children.indices) {
             children[i].drawLeave(applet)
         }

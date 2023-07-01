@@ -1,18 +1,11 @@
-package team.dedica.logo.forest.items
+package team.dedica.logo.items.tree
 
 import processing.core.PVector
+import team.dedica.logo.Util
+import team.dedica.logo.items.GrowthParameters
+import team.dedica.logo.items.PlantSegment
 
 internal class TreeParameters : GrowthParameters {
-    override fun getSeed(origin: PVector, scaleRatio: Float): PlantSegment {
-        return PlantSegment(
-            origin,
-            PVector(0f, Util.random(9f, 12f) * -1 * scaleRatio),
-            Util.random(15f, MAX_STEM_DIAMETER.toFloat()) * scaleRatio,
-            scaleRatio,
-            0,
-            this
-        )
-    }
 
     override fun canStillGrow(plant: PlantSegment): Boolean {
         return plant.diameter > MIN_DIAMETER_TO_GROW

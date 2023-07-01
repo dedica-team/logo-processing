@@ -1,15 +1,16 @@
-package team.dedica.logo.forest.items
+package team.dedica.logo.items
 
 import processing.core.PVector
 
+/**
+ * PlantSegment growth
+ */
 internal interface GrowthParameters {
 
     fun getVelocityReduction(): Float
     fun getBranchProbabilityFactor(): Float
     fun getNewDiameterFactor(): Float
-    fun getSeed(origin: PVector, scaleRatio: Float): PlantSegment
     fun canStillGrow(plant: PlantSegment): Boolean
-
 
     /**
      * slight bump into other direction

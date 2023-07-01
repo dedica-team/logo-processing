@@ -1,4 +1,4 @@
-package team.dedica.logo.forest.items
+package team.dedica.logo
 
 import java.util.*
 
